@@ -5,6 +5,10 @@ const userRouter=require('./router/user')
 const firtPageRouter=require('./router/firstPage')
 const goodsList=require('./router/ListPage')
 const goodDetail=require('./router/Detail')
+
+const bodyParser = require('body-parser');//用于req.body获取值的
+app.use(express.urlencoded({ extended: false }))
+app.use(bodyParser.json());
 app.use(cors())
 app.use(goodDetail)
 app.use('',firtPageRouter)
