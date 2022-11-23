@@ -2,6 +2,57 @@ const db=require('../db/index');
 const jwt=require('jsonwebtoken')
 const QcloudSms = require("qcloudsms_js");
 const {sercet}=require('../config/jwtConfig');
+exports.updatePwd=(req,res)=>{
+  const {tel,pwd}=req.body
+  console.log(pwd,tel);
+  const sql= `select * from user where tel = '${tel}'`;
+  db.query(sql,(err,results)=>{
+    if(results.length>0){
+      const sql1=`update user set pwd = '${pwd}'`;
+      db.query(sql1,(err,results)=>{
+        if(err) {
+          throw err
+        }
+        if(results.affectedRows>0){
+            return res.send({
+              code:200,
+              msg:'修改成功'
+            })
+        }
+        else{
+          return res.send({
+            code:600,
+            msg:'修改失败'
+          })
+        }
+      })
+    }
+    else{
+      return res.send({
+          code:500,
+          msg:'用户不存在'
+      })
+    }
+  })
+}
+exports.queryTel=(req,res)=>{
+  console.log(req.body);
+  const tel=req.body.tel;
+  const sql='select * from user where tel = ?';
+  db.query(sql,tel,(err,results)=>{
+    if(err) throw err
+    if(results.length>0){
+     return res.send({
+        code:200,
+        msg:'手机号存在',
+      })
+    }
+    return res.send({
+      code:600,
+      msg:'手机号不存在'
+    })
+  })
+}
 exports.registerUser=(req,res)=>{
   console.log(req.body);
   const params=req.body
