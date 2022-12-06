@@ -8,10 +8,12 @@ const goodDetail=require('./router/Detail')
 const shopList=require('./router/goods')
 const address=require('./router/address')
 const cart=require('./router/cart')
+const order=require('./router/order')
 const bodyParser = require('body-parser');//用于req.body获取值的
 app.use(express.urlencoded({ extended: false }))
 app.use(bodyParser.json());
 app.use(cors())
+app.use(order)
 app.use(cart)
 app.use(address)
 app.use(goodDetail)
